@@ -4,24 +4,25 @@ _Author: Gustav Janér_
 
 ## CLONE
 ```
-$ git clone <repoUrl>   # Copy remote repo to local environment
+$ git clone <repoUrl>   # Download remote repository to local environment
 ```
 
 
 ## BRANCH
 ```
-$ git branch                     # Display all local branches
-$ git branch -a                  # Display all local and Remote branches of repo
-$ git branch <branch>            # Creates a new branch without 'checking it out'/redirecting HEAD
+$ git branch                    # List all local branches
+$ git branch -a                 # List all local and Remote branches of repo
+$ git branch <newBranch>        # Creates a new branch (without 'checking it out'/redirecting HEAD)
 
-$ git checkout <anyBranch>       # Change to an existing branch/redirect HEAD to point that branch
-$ git checkout -b <newBranch>    # Create a new local branch and redirect HEAD to point to it, short command
+$ git checkout <branch>         # Redirect HEAD to an existing branch
+$ git checkout -b <newBranch>   # Create a new local branch and redirect HEAD to it (short command)
 
-$ git branch -d <anyBranch>      # Remove a local branch
-$ git push origin :<anyBranch>   # Remove a Remote branch on Remote repository
+$ git branch -d <branch>        # Remove a Local  branch
+$ git push origin :<branch>     # Remove a Remote branch
 ```
 
-### Set a Remote Tracking Upstream Branch of a local branch
+
+### Set a Remote Tracking/Upstream Branch of a local branch
 #### Use flag -u when Pushing
 ```
 $ git push -u origin <branch>   # If Remote branch does not already exist in repo: Remote branch is created and set as Upstream
@@ -40,8 +41,8 @@ $ git checkout                  # Less detailed than $ git status
 $ git checkout -- <file>        # Discard(--hard) changes of an Unstaged file in working directory
 
 $ git checkout -b <newBranch>   # Create a new local branch and check out/redirect HEAD to it
-$ git checkout <anyBranch>      # Redirect HEAD to an existing branch
-$ git checkout <anyCommit>      # Redirect HEAD to a specific commit - Detached HEAD state
+$ git checkout <branch>         # Redirect HEAD to an existing branch
+$ git checkout <commitHash>     # Redirect HEAD to a specific commit - Detached HEAD state
 ```
 
 
@@ -71,7 +72,7 @@ $ git commit                       # Enter text editor to write commit message. 
 $ git push   # Push all Commits of current Local branch to its Remote Tracking branch
 ```
 
-### If current Local branch has No Upstream branch
+### If current Local branch has no Upstream branch
 ```
 $ git push -u origin <branch>   # If Remote branch does not already exist in repo: Remote branch is created and set as Upstream
 ```
@@ -92,15 +93,15 @@ $ git reset HEAD@{1}   # CANNOT though recover changes that were NOT previously 
 
 ### Uncommit unpushed Commits
 ```
-$ git reset --soft HEAD~1   # Reset the most recent commit, Keeping the changes of the commit
+$ git reset --soft HEAD~1   # Reset the most recent commit - Keeping the changes of the commit
 $ git reset --soft HEAD~n   # Reset the n number of recent commits
 
-$ git reset --hard HEAD~1   # Reset the most recent commit, Discarding the changes of the commit
+$ git reset --hard HEAD~1   # Reset the most recent commit - Discarding the changes of the commit
 $ git reset --hard HEAD~n   # Reset the n number of recent commits
 ```
 
 ### Uncommit pushed commits
-Use any of the above `reset` commands and then force `push` to change the remote branch
+Use any of the above `reset` commands and then force `push` to remove the commit from remote branch
 ```
 $ git push -f
 ```
@@ -114,50 +115,62 @@ $ git revert <commitHash>   # Create a new commit which reverts the changes of t
 
 
 ## FETCH
-Updates All REMOTE Branches of the local repo from Remote Origin
+Updates all Remote branches of the Local repo from the Remote repo
 ```
-$ git fetch   # Update remote-tracking branches
+$ git fetch   # Update the remote branches in the local working directory
 ```
+
+**Note:** `fetch` only downloads the data to the local repo. It doesn’t `merge` it with the local branches even if they are tracking the remote branches that are updated.
 
 
 ## PULL
-Automatically performs `fetch` first\
-**Careful:** `pull` can cause merge conflicts
+`pull` is short command for: `fetch`+`merge`
 ```
-$ git pull                 # Update ONLY the CURRENT Local branch with its Upstream branch
-$ git pull origin master   # Update current Local branch with new Commits of Remote Master branch. Essentially a Merge
+$ git fetch
+$ git merge origin <branch>
+
+# Above commands are equal to:
+$ git pull origin <branch>
+```
+
+### Use pull to merge with a Remote branch
+```
+$ git pull                 # Merge the current Local branch with its Upstream branch
+$ git pull origin master   # Merge the current Local branch with the Remote master branch
 ```
 
 
 ## MERGE
-**Careful:** `merge` can cause conflicts
+### Safe Merge Workflow
+1. Always make sure that the local branches to be merged are up to date
+2. Always `fetch` before `merge` - or use `pull origin <branch>` instead of `merge`
+3. Always avoid `merge` conflicts from reaching master by first merging master to dev - to resolve any merge conflicts in dev instead
 
 ### Merge procedure
+#### Merge master to dev
+Make sure dev is up to date with master and resolve any `merge` conflicts. Check that the dev feature still works with the new updates from master\
+--> Avoid redundant conflicts and eventual following bugs to reach master. **Keep master stable**
 ```
 $ git checkout dev && git pull
-```
-Make sure dev is up to date with Master and resolve any `merge` conflicts. Check that feature still works with new updates from Master
---> To avoid redundant conflicts and eventual following bugs to reach Master. **Keep master stable**
-```
-$ git pull origin master    # Essentially a merge
+$ git merge origin master        # The previous^ pull also calls fetch - don't need to do it explicitly
 
 # resolve potential conflicts...
 
 $ git push
 ```
 
-Perform the `merge` to Master:
+#### Merge dev to master
 ```
 $ git checkout master && git pull
-$ git merge origin dev
+$ git merge origin dev              # The previous^ pull also calls fetch - don't need to do it explicitly
+
+# resolve potential conflicts...
+
 $ git push
 ```
 
-### Merge vs. Rebase
-`merge` is safer than `rebase`. `merge` creates an extra merge-commit and do **not** rewrite the commit history
-```
-$ git merge <anyBranch>   # Merge the changes of anyBranch into the current branch
-```
+### Merging vs. Rebasing
+`merge` is safer than `rebase`. Merging creates an extra merge-commit and do **not** rewrite the commit history
 
 
 ## REBASE
@@ -172,43 +185,43 @@ $ git rebase –-abort
 ### Rebasing instead of merging
 Apply commits from one branch onto another - Without creating a merge-commit\
 Result: Linear commit history, free of merge-commits\
-`rebase` step: Rewinding Head to replay the commits of dev on top of master
+`rebase` step: Rewinding HEAD to replay the commits of one branch on top of another branch
 
 
-#### Rebase dev to master
+#### Rebase master to dev
+To be able to perform the next step of Rebasing dev to master:\
+The dev branch has to be Directly ahead of the Remote HEAD of the master branch -  so that Fast-Forwaring(Rebasing) is possible
 ```
 $ git checkout dev && git pull
-$ git rebase origin/master       # Rebase the new commits of Master, to Dev
-```
+$ git rebase origin/master       # Rebase the new commits of master to dev - dev is now directly ahead of master
 
-```
 $ git status
 On branch dev
 Your branch and 'origin/dev' have DIVERGED,
 and have 3 and 2 different commits each, respectively.
 (use "git pull" to merge the remote branch into yours)
 
-# If we pull now, we merge the rebasing with origin... Not what we want.
+# If we pull now, we merge the rebasing with remote branch... Not what we want.
 # When rebasing, you’re changing the commit history --> need to Force Push to Remote branch
 
 $ git push -f
 ```
 
-#### Rebase to master
+#### Rebase dev to master
 ```
 $ git checkout master && git pull
 $ git rebase origin/dev             # Rebase to Fast-Forward master to dev
 $ git push
 ```
 
-Or, since dev has been already been rebased on top of master:
+Or, since dev has been already been rebased on top of master:\
 --> a `merge` would be performed by the **Fast-Forwarding** strategy automatically (thus **no** merge commit)
 ```
 $ git merge origin dev
 $ git push
 ```
 
-### Rebasing commits on own branch
+### Rebasing commits on single branch
 To clean up the commit history of a private branch before merging back to master
 
 ```
@@ -254,7 +267,7 @@ $ git log --oneline   # Cleaner log
 
 ## STASH
 ```
-$ git stash           # Save changes (both staged and unstaged) of current branch away to the Stash Stack
+$ git stash           # Save changes (both staged and unstaged) of current branch and Push to the Stash Stack
 
 $ git stash list      # List all stashed stashes on the Stack
 
