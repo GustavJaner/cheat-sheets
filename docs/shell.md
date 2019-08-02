@@ -1,80 +1,18 @@
-Cheat sheet by:\
-Gustav Janér
+_Author: Gustav Janér_
 
-# Unix Shell Commands
+**TODO**
 
-$ ls     (List current directory)
+# Unix Shell commands
 
-Flags:
--a       (Display also hidden files)
--p       (Display /on folders)
--l       (List all with long format)
--t       (Order files and dir by time last modified)
--alt     (All flags)
-
--------------------------------------------------------
-
-$ pwd  (Display the path from the root)
-
--------------------------------------------------------
-
-$ echo "Hello, world!" >> README.md
-
-Create the file README.md and directly writes a line to it
-If README.md already exist: concats a new line to it
-
--------------------------------------------------------
-
-$ cd                 (Change directory)
-
-$ cd ../../2014/dec  (Go up two files and then to 2014/dec)
-
--------------------------------------------------------
-
-$ open .         (Open the finder in current directory)
-
--------------------------------------------------------
-
-$ mkdir <file>    (Create a folder)
-
-$ rm -rf <file>   (Recusively force removes a folder and its contents)
-
--------------------------------------------------------
-
-$ touch <file>  (Create a file)
-
--------------------------------------------------------
-
-$ cp <file0> <file1>
-	Copy the contents of file0 into file1
-
-$ cp m*.txt test/
-	Copy all .txt files that start with m in current directory into the dir test/
-
--------------------------------------------------------
-
-$ echo $PATH
-	will print your path. If you see /usr/local/bin between some colons, then it's in your path.
-
-## KILL
-todo
-
-## ZIP
-.bz2 - CROSS PLATFORM, best compression format
-
-$ tar -jcvf archive_name.tar.bz2 folder_to_compress
-$ tar -jxvf archive_name.tar.bz2
-
-## SIPS
-$ sips -Z 640 *.jpg
-
--Z is to maintain the image's aspect ratio
-"640" is the maximum height and width to be used
-downsize every image ending in .jpg.
+## GREP
+Combine grep with regex to make useful searches
+```
+$ ls | grep ....
+```
 
 ## CHMOD
 
-$ chmod 644 <file>
+$ chmod 644 <file/folder>
 The three numbers places for 644, listed above, represent the following:
 
   6     4     4
@@ -86,7 +24,7 @@ Eg. To give full Read/Write/Execute access to all users Owner/Group/Other:
 $ cmhod 777 <file>
 
 
-Octal number	Symbolic	Permission
+### Symbolic Permission
 0	---	none
 1	--x	execute
 2	-w-	write
@@ -95,6 +33,46 @@ Octal number	Symbolic	Permission
 5	r-x	read/execute
 6	rw-	read/write
 7	rwx	read/write/execute
+
+
+## LS
+```
+$ ls    # List current directory
+```
+### Flags
+-a       # Also list hidden files\
+-l       # List with long format\
+-t       # List by time last modified\
+
+
+## ECHO
+
+$ echo "Hello, world!" >> README.md
+
+Append a new line to the file, or
+Create the file README.md if it does not exist
+
+
+## RM
+
+$ rm -rf <file> - Recusively force removes a folder and its contents
+
+
+## KILL
+todo
+
+## ZIP
+.bz2 - CROSS PLATFORM, good compression format
+
+$ tar -jcvf archive_name.tar.bz2 folder_to_compress
+$ tar -jxvf archive_name.tar.bz2
+
+## SIPS
+$ sips -Z 640 \*.jpg
+
+-Z is to maintain the image's aspect ratio
+"640" is the maximum height and width to be used
+downsize every image ending in .jpg.
 
 
 ## SSH
