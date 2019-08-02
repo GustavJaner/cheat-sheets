@@ -1,7 +1,6 @@
-Cheat sheet by:\
-Gustav Janér
+_Author: Gustav Janér_
 
-# Unix Shell Commands
+# Unix Shell commands
 
 $ ls     (List current directory)
 

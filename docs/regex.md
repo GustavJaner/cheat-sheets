@@ -1,5 +1,4 @@
-Cheat sheet by:\
-Gustav Janér
+_Author: Gustav Janér_
 
 # Regular Expressions
 A regular expression is a sequence of characters that forms a search pattern

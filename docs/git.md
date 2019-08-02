@@ -1,62 +1,14 @@
-Cheat sheet by:\
-Gustav Janér
+_Author: Gustav Janér_
 
-# Git Commands
+# Git commands
 
-## Misc.
-- HEAD points to the tip (most recent Commit) of current branch\
-			- Or to a specific older Commit (detached HEAD)
-
-- Master branch should be stable. Production code\
-      - Use branches to develop and then `merge`/`rebase` to Master
-
-- Remote Repo = Origin
-
-- Remote tracking branch = Upstream branch
-
-- Always: `pull` before `push`
-
-- File life cycle:\
-      - Untracked -> Unmodified -> Modified -> Staged -> Committed -> Pushed
-
-
-### Standard commit procedure
-1. **Stage(add)** the local files that you have changed and that you want to Commit
-2. **Commit** the Staged  files
-3. **Push** the Committed files to the Remote Repository
-
-
-### Commit new branch
-```
-$ git checkout -b <newBranch>      # Flag -b creates a new branch
-
-# do changes...
-
-$ git status                       # Check which files should to be Staged
-$ git add .                        # Stage all modified files
-$ git commit -m “commit message“   # Commit the Staged files. -m = message
-$ git push origin <newBranch>      # Push the new local branch to Remote Repo
-```
-
-**HINT** last step:\
-If you are planning to `push` a new Local branch that
-should track a Remote counterpart, you may want to use `-u`
-to create the Remote branch and to set the Upstream config as you `push`
-```
-$ git push -u origin <newBranch>
-```
-
-
--------------------------------
-
-
-# CLONE
+## CLONE
 ```
 $ git clone <repoUrl>   # Copy remote repo to local environment
 ```
 
 
-# BRANCHES
+## BRANCHES
 ```
 $ git branch                     # Display all local branches
 $ git branch -a                  # Display all local and Remote branches of repo
@@ -93,7 +45,7 @@ $ git branch -u origin/dev                  # Short command
 ```
 
 
-# CHECKOUT
+## CHECKOUT
 ```
 $ git checkout                  # Less detailed than $ git status
 $ git checkout -- <file>        # Discard(--hard) changes of an Unstaged file in working directory
@@ -104,7 +56,7 @@ $ git checkout <anyCommit>      # Redirect HEAD to a specific commit - Detached 
 ```
 
 
-# ADD
+## ADD
 Stages files for `commit`
 ```
 $ git add .               # Stage all modified files
@@ -118,14 +70,14 @@ $ git reset HEAD <file>   # Unstage a single file
 
 
 
-# COMMIT
+## COMMIT
 ```
 $ git commit -m “commit message“   # Commit all Staged files with the given message
 $ git commit                       # Enter text editor to write commit message. Save to commit
 ```
 
 
-# PUSH
+## PUSH
 ```
 $ git push   # Push all Commits of current Local branch to its Remote Tracking branch
 ```
@@ -135,7 +87,7 @@ $ git commit                       # Enter text editor to write commit message. 
 $ git push -u origin <branch>   # If Remote branch does not already exist in repo: Remote branch is created and set as Upstream
 ```
 
-# RESET
+## RESET
 ```
 $ git reset HEAD <file>    # Unstage single file
 $ git reset HEAD           # Unstage all files (--soft)
@@ -165,21 +117,21 @@ $ git push -f
 ```
 
 
-# REVERT
+## REVERT
 Reverts a `commit` that is already pushed to Remote repo
 ```
 $ git revert <commitHash>   # Create a new commit which reverts the changes of the commit you specified
 ```
 
 
-# FETCH
+## FETCH
 Updates All REMOTE Branches of the local repo from Remote Origin
 ```
 $ git fetch   # Update remote-tracking branches
 ```
 
 
-# PULL
+## PULL
 Automatically performs `fetch` first\
 **Careful:** `pull` can cause merge conflicts
 ```
@@ -188,7 +140,7 @@ $ git pull origin master   # Update current Local branch with new Commits of Rem
 ```
 
 
-# MERGE
+## MERGE
 **Careful:** `merge` can cause conflicts
 
 ### Merge procedure
@@ -219,7 +171,7 @@ $ git merge <anyBranch>   # Merge the changes of anyBranch into the current bran
 ```
 
 
-# REBASE
+## REBASE
 **Commit history will diverge from origin**\
 **Be careful. Especially when rebasing public branches**
 
@@ -294,7 +246,7 @@ $ git push -f
 _To rebase multiple commits into one: use **squash** on all commits except the oldest commit_
 
 
-# DIFF/SHOW
+## DIFF/SHOW
 ```
 $ git diff                 # Check the changes of Unstaged files compared to last commit
 $ git diff <commitHash>    # Compare differences to a specific commit
@@ -304,14 +256,14 @@ $ git show <commitHash>    # Check the changes of a specific commit
 ```
 
 
-# LOG
+## LOG
 ```
 $ git log             # Display a list of all commits to current branch and HEAD pointers
 $ git log --oneline   # Cleaner log
 ```
 
 
-# STASH
+## STASH
 ```
 $ git stash           # Save changes (both staged and unstaged) of current branch away to the Stash Stack
 
@@ -330,7 +282,7 @@ $ git stash show i    # Summary of Stash at index i of the Stack
 ```
 
 
-# CLEAN
+## CLEAN
 Remove untracked files from current git branch
 ```
 $ git clean -n   # Display which files will be deleted
@@ -339,7 +291,7 @@ $ git clean -i   # Display the Clean interface
 ```
 
 
-# IGNORE
+## IGNORE
 Add files to the .gitignore to ignore them from being tracked by git
 
 ```
@@ -350,8 +302,51 @@ $ echo "AnyFile" >> .gitignore   # Concatenate
 
 -------------------------------
 
+# Misc.
+- HEAD points to the tip (most recent Commit) of current branch\
+			- Or to a specific older Commit (detached HEAD)
 
-# SETUP A NEW REPO
+- Master branch should be stable. Production code\
+      - Use branches to develop and then `merge`/`rebase` to Master
+
+- Remote Repo = Origin
+
+- Remote tracking branch = Upstream branch
+
+- Always: `pull` before `push`
+
+- File life cycle:\
+      - Untracked -> Unmodified -> Modified -> Staged -> Committed -> Pushed
+
+
+## Standard commit procedure
+1. **Stage(add)** the local files that you have changed and that you want to Commit
+2. **Commit** the Staged  files
+3. **Push** the Committed files to the Remote Repository
+
+
+## Commit new branch
+```
+$ git checkout -b <newBranch>      # Flag -b creates a new branch
+
+# do changes...
+
+$ git status                       # Check which files should to be Staged
+$ git add .                        # Stage all modified files
+$ git commit -m “commit message“   # Commit the Staged files. -m = message
+$ git push origin <newBranch>      # Push the new local branch to Remote Repo
+```
+
+**HINT** last step:\
+If you are planning to `push` a new Local branch that
+should track a Remote counterpart, you may want to use `-u`
+to create the Remote branch and to set the Upstream config as you `push`
+```
+$ git push -u origin <newBranch>
+```
+
+
+## SETUP A NEW REPO
 ```
 $ mkdir <folderName>
 $ cd <folderName>
@@ -370,7 +365,7 @@ git pull origin master --allow-unrelated-histories
 ```
 
 
-# FAST-FORWARD
+## FAST-FORWARD
 ```
 $ git checkout master
 $ git merge hotfix
@@ -405,7 +400,7 @@ Date:   Wed Jul 17 10:43:13 2019 +0200
 ```
 
 
-# RECURSIVE/MERGE
+## RECURSIVE/MERGE
 ```
 $ git checkout master
 Switched to branch 'master'
@@ -417,7 +412,7 @@ index.html |    1 +
 This looks a bit different than the hotfix merge from earlier. In this case, the development history has diverged from some previous point. Because the commit on the branch you’re on isn’t a Direct ancestor of the branch you’re merging in, Git has to do some work. In this case, Git does a simple three-way merge, using the two snapshots pointed to by the branch tips and the common ancestor of the two.
 
 
-# MERGE vs REBASE
+## MERGE vs REBASE
 If you prefer a clean, Linear history, free of any unnecessary merge-commits:
 you should use git Rebase instead of git Merge when integrating changes from another branch
 (git Merge creates extra merge-commits, Rebase does not)
@@ -426,7 +421,7 @@ On the other hand, if you want to preserve the complete history of your project 
 avoid the risk of re-writing Public commits, you should use git Merge
 
 
-# CHECKOUT out a BRANCH
+## CHECKOUT out a BRANCH
 Before switching branches/redirecting the HEAD pointer to another branch:
 If your working directory or staging area has uncommitted changes that conflict with the branch you’re checking out, Git won’t let you switch branches.
 It’s allways best practice to have a clean working state when you switch branches.
