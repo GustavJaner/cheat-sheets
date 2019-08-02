@@ -8,7 +8,7 @@ $ git clone <repoUrl>   # Copy remote repo to local environment
 ```
 
 
-## BRANCHES
+## BRANCH
 ```
 $ git branch                     # Display all local branches
 $ git branch -a                  # Display all local and Remote branches of repo
@@ -22,20 +22,9 @@ $ git push origin :<anyBranch>   # Remove a Remote branch on Remote repository
 ```
 
 ### Set a Remote Tracking Upstream Branch of a local branch
-To avoid having to specify origin: `$ git pull origin <branch>`
-
-Current local branch has **no** upstream branch if:
+#### Use flag -u when Pushing
 ```
-$ git status
-On branch dev
-Your branch is up to date with 'origin/dev'.   # <-- if NOT shown: the local branch has NO upstream branch
-nothing to commit, working tree clean
-```
-or if:
-```
-$ git pull
-There is no tracking information for the current branch.
-Please specify which branch you want to merge with.
+$ git push -u origin <branch>   # If Remote branch does not already exist in repo: Remote branch is created and set as Upstream
 ```
 
 #### Set the Upstream branch to an Existing Remote branch
