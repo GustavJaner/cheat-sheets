@@ -1,2 +1,2 @@
 # cheat-sheets
-Collection of my various coding "cheat sheets"
+Collection of various coding "cheat sheets"
