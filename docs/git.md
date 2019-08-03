@@ -1,6 +1,38 @@
 _Author: Gustav Janér_
 
 # Git commands
+- HEAD points to the tip (most recent Commit) of current branch\
+			- Or to a specific older Commit (detached HEAD)
+
+- Master branch should be stable. Production code\
+      - Use branches to develop and then `merge`/`rebase` to master
+
+- Remote Repo == Origin
+
+- Remote Tracking branch == Upstream branch
+
+- Always: `pull` before `push`
+
+- File life cycle:\
+      - Untracked -> Unmodified -> Modified -> Staged -> Committed -> Pushed
+
+### Standard Push procedure
+1. **Stage(add)** the local files that you have changed and that you want to Commit
+2. **Commit** the Staged  files
+3. **Push** the Committed files to the Remote Repository
+
+#### Push new branch
+```
+$ git checkout -b <newBranch>      # Create a new local branch and redirect HEAD to it
+
+# do changes...
+
+$ git status                       # Check which files has been modified
+$ git add .                        # Stage all modified files
+$ git commit -m “commit message“   # Commit the Staged files (m = message)
+$ git push -u origin <newBranch>   # Push the new local branch to Remote Repo (u = set the Upstream branch)
+```
+
 
 ## CLONE
 ```
@@ -30,7 +62,7 @@ $ git push -u origin <branch>   # If Remote branch does not already exist in rep
 
 #### Set the Upstream branch to an Existing Remote branch
 ```
-$ git branch --set-upstream-to=origin/dev   # Set upstream branch of current branch
+$ git branch --set-upstream-to=origin/dev   # Set Upstream branch of current branch
 $ git branch -u origin/dev                  # Short command
 ```
 
@@ -59,7 +91,6 @@ $ git reset HEAD <file>   # Unstage a single file
 ```
 
 
-
 ## COMMIT
 ```
 $ git commit -m “commit message“   # Commit all Staged files with the given message
@@ -69,13 +100,14 @@ $ git commit                       # Enter text editor to write commit message. 
 
 ## PUSH
 ```
-$ git push   # Push all Commits of current Local branch to its Remote Tracking branch
+$ git push   # Push all Commits of current Local branch to its Upstream branch
 ```
 
 ### If current Local branch has no Upstream branch
 ```
 $ git push -u origin <branch>   # If Remote branch does not already exist in repo: Remote branch is created and set as Upstream
 ```
+
 
 ## RESET
 ```
@@ -142,7 +174,7 @@ $ git pull origin master   # Merge the current Local branch with the Remote mast
 
 ## MERGE
 ### Safe Merge Workflow
-1. Always make sure that the local branches to be merged are up to date with Upstream branches - use: `pull`
+1. Always `pull` before `push` - make sure that the local branches to be merged are up to date with Upstream branches
 2. Always `fetch` before `merge` - or use `pull origin <branch>` instead of `merge`
 3. Always avoid `merge` conflicts from reaching master by first merging master to dev - to resolve any merge conflicts in dev instead
 
@@ -295,56 +327,14 @@ $ git clean -i   # Display the Clean interface
 ```
 
 
+# Misc.
+
 ## IGNORE
-Add files to the .gitignore to ignore them from being tracked by git
+Add files to the .gitignore to ignore them from being tracked by Git
 
 ```
 $ vim .gitignore
 $ echo "AnyFile" >> .gitignore   # Concatenate
-```
-
-
-# Misc.
-- HEAD points to the tip (most recent Commit) of current branch\
-			- Or to a specific older Commit (detached HEAD)
-
-- Master branch should be stable. Production code\
-      - Use branches to develop and then `merge`/`rebase` to Master
-
-- Remote Repo = Origin
-
-- Remote tracking branch = Upstream branch
-
-- Always: `pull` before `push`
-
-- File life cycle:\
-      - Untracked -> Unmodified -> Modified -> Staged -> Committed -> Pushed
-
-
-## Standard commit procedure
-1. **Stage(add)** the local files that you have changed and that you want to Commit
-2. **Commit** the Staged  files
-3. **Push** the Committed files to the Remote Repository
-
-
-## Commit new branch
-```
-$ git checkout -b <newBranch>      # Flag -b creates a new branch
-
-# do changes...
-
-$ git status                       # Check which files should to be Staged
-$ git add .                        # Stage all modified files
-$ git commit -m “commit message“   # Commit the Staged files. -m = message
-$ git push origin <newBranch>      # Push the new local branch to Remote Repo
-```
-
-**HINT** last step:\
-If you are planning to `push` a new Local branch that
-should track a Remote counterpart, you may want to use `-u`
-to create the Remote branch and to set the Upstream config as you `push`
-```
-$ git push -u origin <newBranch>
 ```
 
 
@@ -380,7 +370,6 @@ Fast-forward
 You’ll notice the phrase “fast-forward” in that merge. Because the commit C4 pointed to by the branch hotfix you merged in was Directly ahead of the commit C2 on Master, Git simply moves the pointer forward. To phrase that another way, when you try to merge one commit with a commit that can be reached by following the first commit’s history, Git simplifies things by moving the pointer forward because there is no divergent work to merge together — this is called a “fast-forward.”
 
 **--> This is the strategy of Rebasing**
-
 
 Notice below the pointing of the local HEAD and and the origin HEAD of master?
 --> only when the HEAD pointer of the local branch is Directly ahead of Origin/master, then Fast-Forward of main is possible:
