@@ -142,7 +142,7 @@ $ git pull origin master   # Merge the current Local branch with the Remote mast
 
 ## MERGE
 ### Safe Merge Workflow
-1. Always make sure that the local branches to be merged are up to date
+1. Always make sure that the local branches to be merged are up to date with Upstream branches - use: `pull`
 2. Always `fetch` before `merge` - or use `pull origin <branch>` instead of `merge`
 3. Always avoid `merge` conflicts from reaching master by first merging master to dev - to resolve any merge conflicts in dev instead
 
@@ -160,6 +160,7 @@ $ git push
 ```
 
 #### Merge dev to master
+Create a **Pull Request(PR)** on the web interface of your Git provider, or use the Git CLI:
 ```
 $ git checkout master && git pull
 $ git merge origin dev              # The previous^ pull also calls fetch - don't need to do it explicitly
@@ -208,6 +209,7 @@ $ git push -f
 ```
 
 #### Rebase dev to master
+Create a **Pull Request(PR)** on the web interface of your Git provider, or use the Git CLI:
 ```
 $ git checkout master && git pull
 $ git rebase origin/dev             # Rebase to Fast-Forward master to dev
