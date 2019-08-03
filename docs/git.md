@@ -55,6 +55,7 @@ $ git push origin :<branch>     # Remove a Remote branch
 
 
 ### Set a Remote Tracking/Upstream Branch of a local branch
+
 #### Use flag -u when Pushing
 ```
 $ git push -u origin <branch>   # If Remote branch does not already exist in repo: Remote branch is created and set as Upstream
@@ -173,18 +174,22 @@ $ git pull origin master   # Merge the current Local branch with the Remote mast
 
 
 ## MERGE
+
 ### Safe Merge Workflow
 1. Always `pull` before `push` - make sure that the local branches to be merged are up to date with Upstream branches
-2. Always `fetch` before `merge` - or use `pull origin <branch>` instead of `merge`
+2. Always `fetch` before `merge origin` - or use `pull origin <branch>` instead
 3. Always avoid `merge` conflicts from reaching master by first merging master to dev - to resolve any merge conflicts in dev instead
 
 ### Merge procedure
+
 #### Merge master to dev
 Make sure dev is up to date with master and resolve any `merge` conflicts. Check that the dev feature still works with the new updates from master\
 --> Avoid redundant conflicts and eventual following bugs to reach master. **Keep master stable**
 ```
-$ git checkout dev && git pull
-$ git merge origin master        # The previous^ pull also calls fetch - don't need to do it explicitly
+# On branch dev
+
+$ git pull
+$ git merge origin master   # The previous^ pull also calls fetch - don't need to do it explicitly
 
 # resolve potential conflicts...
 
@@ -195,10 +200,7 @@ $ git push
 Create a **Pull Request(PR)** on the web interface of your Git provider, or use the Git CLI:
 ```
 $ git checkout master && git pull
-$ git merge origin dev              # The previous^ pull also calls fetch - don't need to do it explicitly
-
-# resolve potential conflicts...
-
+$ git merge dev
 $ git push
 ```
 
@@ -216,17 +218,19 @@ $ git rebase –-abort
 ```
 
 ### Rebasing instead of merging
-Apply commits from one branch onto another - Without creating a merge-commit\
+Rewinding HEAD to replay the commits of one branch on top of another branch\
+Apply commits from one branch onto another - without creating a merge-commit\
 Result: Linear commit history, free of merge-commits\
-`rebase` step: Rewinding HEAD to replay the commits of one branch on top of another branch
 
 
 #### Rebase master to dev
 To be able to perform the next step of Rebasing dev to master:\
 The dev branch has to be Directly ahead of the Remote HEAD of the master branch -  so that Fast-Forwaring(Rebasing) is possible
 ```
-$ git checkout dev && git pull
-$ git rebase origin/master       # Rebase the new commits of master to dev - dev is now directly ahead of master
+# On branch dev
+
+$ git pull
+$ git rebase origin/master   # Rebase the new commits of master to dev - dev is now directly ahead of master
 
 $ git status
 On branch dev
@@ -244,16 +248,12 @@ $ git push -f
 Create a **Pull Request(PR)** on the web interface of your Git provider, or use the Git CLI:
 ```
 $ git checkout master && git pull
-$ git rebase origin/dev             # Rebase to Fast-Forward master to dev
+$ git rebase dev                    # Rebase to Fast-Forward master to the tip of dev
 $ git push
 ```
 
-Or, since dev has been already been rebased on top of master:\
---> a `merge` would be performed by the **Fast-Forwarding** strategy automatically (thus **no** merge commit)
-```
-$ git merge origin dev
-$ git push
-```
+_Since dev has been already been rebased on top of master:\
+--> a `merge` would be performed by the **Fast-Forwarding** strategy automatically - thus same result as the `rebase`_
 
 ### Rebasing commits on single branch
 To clean up the commit history of a private branch before merging back to master
@@ -284,19 +284,31 @@ _To rebase multiple commits into one: use **squash** on all commits except the o
 
 ## DIFF/SHOW
 ```
-$ git diff                 # Check the changes of Unstaged files compared to last commit
-$ git diff <commitHash>    # Compare differences to a specific commit
+$ git diff                 # List the changes of Unstaged files compared to last commit
+$ git diff <commitHash>    # List the changes compared to a specific commit
 
-$ git show                 # Check the changes of the last commit compared to the 2nd last commit
-$ git show <commitHash>    # Check the changes of a specific commit
+$ git show                 # List the changes of the last commit compared to the 2nd last commit
+$ git show <commitHash>    # List the changes of a specific commit
 ```
 
 
 ## LOG
 ```
-$ git log             # Display a list of all commits to current branch and HEAD pointers
+$ git log             # List all commits to current branch and show HEAD pointers
 $ git log --oneline   # Cleaner log
 ```
+
+### HEAD pointers
+The HEAD points by default to the tip (most recent Commit) of current branch, or to a specific older Commit (detached HEAD)
+```
+$ git log --oneline
+
+d1a3319 (HEAD -> master)             [Git] Rewrite merge vs. rebase section
+bf30977 (origin/master, origin/HEAD) [Git] Rearange sections
+```
+- **HEAD -> master** - the Local HEAD is currently pointing to the tip of the Local master branch
+- **origin/master** - the Remote master branch is currently one commit behind the Local master branch
+- **origin/HEAD** - this branch/commit is the default initial checkout when the repo is cloned
 
 
 ## STASH
@@ -330,89 +342,81 @@ $ git clean -i   # Display the Clean interface
 # Misc.
 
 ## IGNORE
-Add files to the .gitignore to ignore them from being tracked by Git
-
+Add files and folders to the .gitignore file to ignore them from being tracked by Git
 ```
 $ vim .gitignore
-$ echo "AnyFile" >> .gitignore   # Concatenate
+$ echo "fileToIgnore" >> .gitignore   # Append to .gitignore
 ```
 
 
 ## SETUP A NEW REPO
 ```
-$ mkdir <folderName>
-$ cd <folderName>
+$ mkdir <folderName> && cd "$_"
 
-$ git init                              # Initialise a LOCAL git repository in current directory
-$ echo "# Some git repo" >> README.md   # Creates the README.md file
-$ vim .gitignore                        # Creates the .gitignore file
-$ git add README.md                     # Stages the README.md file
-$ git commit -m "first commit"          # Commit the Staged files
-$ git remote add origin <repo url>      # Stages new Origin Repo
-$ git push -u origin master             # Pushes staged Repo
+$ git init                              # Initialise a Local git repository in current directory
+$ echo "# Some git repo" >> README.md   # Create the README.md file
+$ echo "fileToIgnore" >> .gitignore     # Create the .gitignore file
+$ git add .                             # Stage all modified files
+$ git commit -m "Init commit"           # Commit the Staged files
+$ git remote add origin <repoUrl>       # Stage new Origin Repo
+$ git push -u origin master             # Push local Repo to the Remote origin
 ```
-If creating a new repo from an existing repository
+
+### Create a new repo from an existing repository
 ```
 git pull origin master --allow-unrelated-histories
 ```
 
 
-## FAST-FORWARD
+## MERGE vs. REBASE
+- If you prefer a clean, Linear history, free of any unnecessary merge-commits:\
+use `rebase` when integrating changes from other branches.\
+Merging creates an extra merge-commit - Rebasing does not.
+
+- If you prefer preserving the complete history of your project and avoiding the risk of rewriting Public commits:\
+use `merge` when integrating changes from other branches.\
+Merging do not risk rewriting commit history - Reabasing does.
+
+### FAST-FORWARD
 ```
-$ git checkout master
-$ git merge hotfix
-Updating f42c576..3a0874c
-Fast-forward
- index.html | 2 ++
- 1 file changed, 2 insertions(+)
-```
-
-You’ll notice the phrase “fast-forward” in that merge. Because the commit C4 pointed to by the branch hotfix you merged in was Directly ahead of the commit C2 on Master, Git simply moves the pointer forward. To phrase that another way, when you try to merge one commit with a commit that can be reached by following the first commit’s history, Git simplifies things by moving the pointer forward because there is no divergent work to merge together — this is called a “fast-forward.”
-
-**--> This is the strategy of Rebasing**
-
-Notice below the pointing of the local HEAD and and the origin HEAD of master?
---> only when the HEAD pointer of the local branch is Directly ahead of Origin/master, then Fast-Forward of main is possible:
-```
-$ git log
-commit c708f92c46e9366cedf17811dbe098b1b74f6ec2 (HEAD -> gustav-main)
-Author: GustavJaner <gustav.janer@gmail.com>
-Date:   Thu Jul 18 12:24:48 2019 +0200
-
-    [UserName] Update files after new join API of videos
-    - Display username......
-
-commit 3edfd07fe9d700e2fb1b562daa745e7df7a1cc4e (origin/master, origin/HEAD, master)
-Author: GustavJaner <gustav.janer@gmail.com>
-Date:   Wed Jul 17 10:43:13 2019 +0200
-
-    [VideoPreview] Feed of video previews
-    - Added a container........
+$ git checkout master && git pull
+$ git merge dev
+Updating f65asdf..234gar
+Fast-forward                  # Fast-forward
+ index.html | 3 ++
+ 2 file changed, 5 insertions(+)
 ```
 
+When the commit pointed to by the dev branch is Directly ahead of the tip of master, Git simply moves the master HEAD pointer forward(Fast-Forwarding).\
+When merging a branch with another branch that can be reached by following the first branch's commit history - Git performs a Fast-Forward of the commits.
 
-## RECURSIVE/MERGE
+**--> This is the strategy of Rebasing**\
+Notice below the pointing of the local HEAD and and the origin of master:\
+only when the HEAD pointer of dev is Directly ahead of **origin/master** - then Fast-Forward of dev to origin master is possible
 ```
-$ git checkout master
+$ git log --oneline                            # Fast-Forward possible
+
+c708f92 (HEAD -> dev)                          [Register] Update client for the new API
+8hfeaj3                                        [Config] Minor update config file
+3edfd07 (origin/master, origin/HEAD, master)   [VideoPreview] Create the feed of video previews
+```
+
+### RECURSIVE three-way-merge
+```
+$ git checkout master && git pull
 Switched to branch 'master'
-$ git merge iss53
+
+$ git merge dev
 Merge made by the 'recursive' strategy.
-index.html |    1 +
-1 file changed, 1 insertion(+)
+index.html |    2 +
+2 file changed, 5 insertion(+)
 ```
-This looks a bit different than the hotfix merge from earlier. In this case, the development history has diverged from some previous point. Because the commit on the branch you’re on isn’t a Direct ancestor of the branch you’re merging in, Git has to do some work. In this case, Git does a simple three-way merge, using the two snapshots pointed to by the branch tips and the common ancestor of the two.
+When the commit pointed to by the dev branch is **Not** directly ahead of the tip of master, Git has to make a three-way-merge (Recursive Strategy).\
+This is the case when the development history has diverged at some previous commit.\
+When the branch merged into master is not a direct ancestor of master, Git performs a three-way merge - using the two commits pointed to by the branch tips and the common ancestor commit.
 
 
-## MERGE vs REBASE
-If you prefer a clean, Linear history, free of any unnecessary merge-commits:
-you should use git Rebase instead of git Merge when integrating changes from another branch
-(git Merge creates extra merge-commits, Rebase does not)
-
-On the other hand, if you want to preserve the complete history of your project and
-avoid the risk of re-writing Public commits, you should use git Merge
-
-
-## CHECKOUT out a BRANCH
-Before switching branches/redirecting the HEAD pointer to another branch:
-If your working directory or staging area has uncommitted changes that conflict with the branch you’re checking out, Git won’t let you switch branches.
-It’s allways best practice to have a clean working state when you switch branches.
+## CHECKOUT a BRANCH
+Before checking out branches/redirecting the HEAD pointer to another branch/commit:\
+If your working directory/staging area has uncommitted changes that conflict with the branch you’re checking out, then Git won’t let you switch branches.
+Either way, it’s allways best practice to have a clean working state before you switch branches - allways `commit` or `stash` before checking out
