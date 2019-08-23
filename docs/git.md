@@ -1,20 +1,20 @@
 _Author: Gustav Janér_
 
 # Git commands
-- HEAD points to the tip (most recent Commit) of current branch\
-			- Or to a specific older Commit (detached HEAD)
-
 - Master branch should be stable. Production code\
       - Use branches to develop and then `merge`/`rebase` to master
 
-- Remote Repo == Origin
-
-- Remote Tracking branch == Upstream branch
-
 - Always: `pull` before `push`
 
+- HEAD points to the tip (most recent Commit) of current branch\
+			- Or to a specific older Commit (detached HEAD)
+
+- Remote Repo = Origin
+
+- Remote Tracking branch = Upstream branch
+
 - File life cycle:\
-      - Untracked -> Unmodified -> Modified -> Staged -> Committed -> Pushed
+      - Untracked -> Unmodified -> Modified/Unstaged -> Staged -> Committed -> Pushed
 
 ### Standard Push procedure
 1. **Stage(add)** the local files that you have changed and that you want to Commit
@@ -113,7 +113,8 @@ $ git push -u origin <branch>   # If Remote branch does not already exist in rep
 ## RESET
 ```
 $ git reset HEAD <file>    # Unstage single file
-$ git reset HEAD           # Unstage all files (--soft)
+$ git reset HEAD           # Unstage all files
+# default for reset is: --soft
 
 $ git reset --hard         # Discard all uncommitted changes on current branch
 ```
@@ -130,7 +131,6 @@ $ git reset --soft HEAD~1   # Reset the most recent commit - Keeping the changes
 $ git reset --soft HEAD~n   # Reset the n number of recent commits
 
 $ git reset --hard HEAD~1   # Reset the most recent commit - Discarding the changes of the commit
-$ git reset --hard HEAD~n   # Reset the n number of recent commits
 ```
 
 ### Uncommit pushed commits
@@ -189,7 +189,7 @@ Make sure dev is up to date with master and resolve any `merge` conflicts. Check
 # On branch dev
 
 $ git pull
-$ git merge origin master   # The previous^ pull also calls fetch - don't need to do it explicitly
+$ git merge origin/master   # The previous^ pull also calls fetch - don't need to do it explicitly
 
 # resolve potential conflicts...
 
