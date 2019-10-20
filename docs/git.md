@@ -4,7 +4,8 @@ _Author: Gustav Janér_
 - Master branch should be stable. Production code\
       - Use dev branches to develop and then `merge`/`rebase` to master
 
-- Always: `pull` before `push`
+- Always: `pull` before `push`\
+      - Make sure that a local _public_ branch to be pushed has the newest upstream commits
 
 - HEAD points to the tip (most recent Commit) of current branch\
 			- Or to a specific older Commit (detached HEAD)
@@ -27,7 +28,7 @@ $ git checkout -b <newBranch>      # Create a new local branch and redirect HEAD
 
 # do changes...
 
-$ git status                       # Check which files has been modified
+$ git status                       # Check which files have been modified
 $ git add .                        # Stage all modified files
 $ git commit -m “commit message“   # Commit the Staged files (m = message)
 $ git push -u origin <newBranch>   # Push the new local branch to Remote Repo (u = set the Upstream branch)
@@ -108,52 +109,10 @@ $ git push -u origin <branch>   # If Remote branch does not already exist in rep
 ```
 
 
-## RESET
-### Soft vs. Hard reset
-- soft reset will unstage/uncommit files/commits, but still keep the changes
-    - `reset --soft` is the default if not specified
-- hard reset will unstage/uncommit files/commits, **discarding** all changes
-
-**Careful:** `reset --hard`\
-All local changes currently made will be **lost**. To undo a `reset`:
-```
-$ git reset HEAD@{1}   # CANNOT though recover changes that were NOT previously Staged
-```
-
-### Unstage staged files
-```
-$ git reset HEAD <file>     # Unstage single file
-$ git reset HEAD            # Unstage all files
-
-$ git reset --hard HEAD     # Discard all uncommitted changes on current branch
-```
-
-### Uncommit unpushed commits
-```
-$ git reset --soft HEAD~1   # Reset the most recent commit - Keeping the changes of the commit
-$ git reset --soft HEAD~n   # Reset the n number of recent commits
-
-$ git reset --hard HEAD~1   # Reset the most recent commit - Discarding the changes of the commit
-```
-
-### Uncommit pushed commits
-Use any of the above `reset` commands and then force `push` to remove the commit from remote branch
-```
-$ git push -f
-```
-
-
-## REVERT
-Reverts a commit that is already pushed to Remote repo
-```
-$ git revert <commitHash>   # Create a new commit which reverts the changes of the commit you specified
-```
-
-
 ## FETCH
-Updates all Remote branches of the Local repo from the Remote repo
+Updates all Origin branches of the Local repo, from the Remote repo
 ```
-$ git fetch   # Update the remote branches in the local working directory
+$ git fetch   # Update all the origin branches of the local repo
 ```
 
 **Note:**\
@@ -170,50 +129,49 @@ $ git merge origin <branch>
 $ git pull origin <branch>
 ```
 
-### Use pull to merge with a Remote branch
+### Update a Local branch with a Remote branch
 ```
-$ git pull                 # Merge the current Local branch with its Upstream branch
-$ git pull origin master   # Merge the current Local branch with the Remote master branch
+$ git pull                 # Update the current Local branch with its Upstream branch       (short command: $ git pull origin <currentBranch>)
+$ git pull origin master   # Update the current Local branch with the Remote master branch
 ```
 
 
 ## MERGE
 
-### Safe Merge Workflow
-1. Always `pull` before `push` - make sure that the local branches to be merged are up to date with Remote repository
-2. Always `fetch` before using `merge origin <branch>` - or use `pull origin <branch>` instead
-3. Always avoid `merge` conflicts from reaching master by first merging master to dev branch - to resolve any merge conflicts in the dev branch instead
+### Safe workflow
+Never let `merge` conflicts reach the origin master branch.\
+Always update/merge a dev branch with origin master first, before merging the dev branch to origin master - to resolve any merge conflicts in the dev branch instead of origin master. Also to make sure that the dev feature still works with any new updates from origin master.\
+**Keep master stable**
 
-### Merge procedure
-
-#### Merge master to dev
-Make sure dev is up to date with master and resolve any merge conflicts. Check that the dev feature still works with the new updates from master\
---> Avoid redundant conflicts and eventual following bugs to reach master. **Keep master stable**
+### Update dev branch with new commits to origin master
 ```
 # * currently on branch dev *
 
-# if branch dev is private:
-$ git pull origin master
+# * if branch dev is private:
+$ git pull origin master     # Update local dev branch with origin master
 
-# if branch dev is public:
-$ git pull                   # Fetch(update) the local origin/master branch and Pull current branch dev for upstream Commits
-$ git merge origin master    # Merge origin master into branch dev
+# * if branch dev is public:
+$ git pull                   # Update current branch dev with upstream Commits + Fetch(update) the local origin/master branch
+$ git merge origin master    # Update local dev branch with origin master
 
 # resolve potential conflicts...
 
 $ git push
 ```
 
-#### Merge dev to master
-Create a **Pull Request(PR)** on the web interface of your Git provider, or use the Git CLI:
+### Merge dev branch to origin master
+Always create a **Pull Request(PR)** on the web interface of your Git provider to merge new commits to master. Request other collaborators review the PR before merging.\
+_Otherwise, also possible to use the Git CLI:_
 ```
-$ git checkout master && git pull
+# * currently on branch dev *
+
+$ git checkout master && git pull   # Update local master branch with origin master
 $ git merge dev
 $ git push
 ```
 
 ### Merging vs. Rebasing
-`merge` is safer than `rebase`. Merging creates an extra merge-commit and **cannot** rewrite the commit history
+`merge` is safer than `rebase`. Merging creates an extra merge-commit if needed and **cannot** rewrite the commit history
 
 
 ## REBASE
@@ -236,6 +194,7 @@ To be able to perform the next step of Rebasing dev to master:\
 First, the dev branch has to be Directly ahead of the Remote HEAD of the master branch - so that Fast-Forwaring(Rebasing) is possible
 ```
 # * currently on branch dev *
+
 
 $ git pull
 $ git rebase origin/master   # Rebase the new commits of master to dev - dev is now directly ahead of master
@@ -288,6 +247,48 @@ $ git push -f
 ```
 
 _To rebase multiple commits into one: use **squash** on all commits except the oldest commit_
+
+
+## RESET
+### Soft vs. Hard reset
+- soft reset will unstage/uncommit files/commits, but still keep the changes
+    - `reset --soft` is the default if not specified
+- hard reset will unstage/uncommit files/commits, **discarding** all changes
+
+**Careful:** `reset --hard`\
+All local changes currently made will be **lost**. To undo a `reset`:
+```
+$ git reset HEAD@{1}   # CANNOT though recover changes that were NOT previously Staged
+```
+
+### Unstage staged files
+```
+$ git reset HEAD <file>     # Unstage single file
+$ git reset HEAD            # Unstage all files
+
+$ git reset --hard HEAD     # Discard all uncommitted changes on current branch
+```
+
+### Uncommit unpushed commits
+```
+$ git reset --soft HEAD~1   # Reset the most recent commit - Keeping the changes of the commit
+$ git reset --soft HEAD~n   # Reset the n number of recent commits
+
+$ git reset --hard HEAD~1   # Reset the most recent commit - Discarding the changes of the commit
+```
+
+### Uncommit pushed commits
+Use any of the above `reset` commands and then force `push` to remove the commit from remote branch
+```
+$ git push -f
+```
+
+
+## REVERT
+Reverts a commit that is already pushed to Remote repo
+```
+$ git revert <commitHash>   # Create a new commit which reverts the changes of the commit you specified
+```
 
 
 ## DIFF/SHOW
