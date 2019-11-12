@@ -1,11 +1,13 @@
 _Author: Gustav Janér_
 
 # Git commands
+
+### Misc.
 - Master branch should be stable. Production code\
       - Use dev branches to develop and then `merge`/`rebase` to master
 
-- Always: `pull` before `push`\
-      - Make sure that a local _public_ branch to be pushed has the newest upstream commits
+<!-- - Always: `pull` before `push`\
+      - Make sure that a local _public_ branch to be pushed has the newest upstream commits -->
 
 - HEAD points to the tip (most recent Commit) of current branch\
 			- Or to a specific older Commit (detached HEAD)
@@ -80,7 +82,7 @@ $ git checkout <commitHash>     # Redirect HEAD to a specific commit - Detached 
 
 
 ## ADD
-Stages files for commit
+Stage files for commit
 ```
 $ git add .               # Stage all modified files
 $ git add <file>          # Stage a single file
@@ -99,6 +101,7 @@ $ git commit                       # Enter text editor to write commit message. 
 
 
 ## PUSH
+Push local commits to Origin
 ```
 $ git push   # Push all Commits of current Local branch to its Upstream branch
 ```
@@ -110,13 +113,13 @@ $ git push -u origin <branch>   # If Remote branch does not already exist in rep
 
 
 ## FETCH
-Updates all Origin branches of the Local repo, from the Remote repo
+Update all local origin branches of the Local repo
 ```
 $ git fetch   # Update all the origin branches of the local repo
 ```
 
 **Note:**\
-`fetch` only downloads new updates to the local repo. It doesn’t `merge` the updates with the local branches. Even if they are tracking the remote branches that are updated.
+`fetch` only updates the local copies of the Origin branches in the local repo. It does **not** `merge` the Origin updates with the actual local branches. Even if the local branches are tracking the Origin branches that are updated.
 
 
 ## PULL
@@ -131,7 +134,7 @@ $ git pull origin <branch>
 
 ### Update a Local branch with a Remote branch
 ```
-$ git pull                 # Update the current Local branch with its Upstream branch       (short command: $ git pull origin <currentBranch>)
+$ git pull                 # Update the current Local branch with its Upstream branch
 $ git pull origin master   # Update the current Local branch with the Remote master branch
 ```
 
@@ -140,7 +143,7 @@ $ git pull origin master   # Update the current Local branch with the Remote mas
 
 ### Safe workflow
 Never let `merge` conflicts reach the origin master branch.\
-Always update/merge a dev branch with origin master first, before merging the dev branch to origin master - to resolve any merge conflicts in the dev branch instead of origin master. Also to make sure that the dev feature still works with any new updates from origin master.\
+Always update a dev branch with origin master first, before merging the dev branch to origin master - to resolve any merge conflicts in the dev branch instead of origin master. Also to make sure that the dev feature still works with any new updates from origin master.\
 **Keep master stable**
 
 ### Update dev branch with new commits to origin master
@@ -160,7 +163,7 @@ $ git push
 ```
 
 ### Merge dev branch to origin master
-Always create a **Pull Request(PR)** on the web interface of your Git provider to merge new commits to master. Request other collaborators review the PR before merging.\
+Always create a **Pull Request(PR)** on the web interface of your Git provider to merge new commits to master. Request other collaborators to review the PR before merging.\
 _Otherwise, also possible to use the Git CLI:_
 ```
 # * currently on branch dev *
