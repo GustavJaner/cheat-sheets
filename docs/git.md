@@ -261,7 +261,7 @@ _To rebase multiple commits into one: use **squash** on all commits except the o
 **Careful:** `reset --hard`\
 All local changes currently made will be **lost**. To undo a `reset`:
 ```
-$ git reset HEAD@{1}   # CANNOT though recover changes that were NOT previously Staged
+$ git reset HEAD@{1}   # CANNOT though recover changes that were never previously Staged
 ```
 
 ### Unstage staged files
@@ -274,10 +274,10 @@ $ git reset --hard HEAD     # Discard all uncommitted changes on current branch
 
 ### Uncommit unpushed commits
 ```
-$ git reset --soft HEAD~1   # Reset the most recent commit - Keeping the changes of the commit
-$ git reset --soft HEAD~n   # Reset the n number of recent commits
+$ git reset HEAD~1          # Reset the most recent commit    - Keeping the changes of the commit
+$ git reset HEAD~n          # Reset the n most recent commits - Keeping the changes of the commit
 
-$ git reset --hard HEAD~1   # Reset the most recent commit - Discarding the changes of the commit
+$ git reset --hard HEAD~n   # Reset the n most recent commits - Discarding the changes of the commit
 ```
 
 ### Uncommit pushed commits
@@ -377,9 +377,14 @@ $ git push -u origin master             # Push local Repo to the Remote origin
 
 ### Create a new repo from an existing repository
 ```
-git pull origin master --allow-unrelated-histories
+$ git pull origin master --allow-unrelated-histories
 ```
 
+### Change the remote repository of a local repository
+```
+git remote -v                                 # List the current remote repository
+git remote set-url <remoteName> <remoteUrl>   # Let remoteName=origin
+```
 
 ## MERGE vs. REBASE
 - If you prefer a clean, Linear history, free of any unnecessary merge-commits:\
