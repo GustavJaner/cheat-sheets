@@ -1,31 +1,19 @@
 _Author: Gustav Janér_
 
 # Git commands
-test text
-test test test<br></br>
-asdkjalsdkhasdlkjh<br>
-ashdlashjd\
-nytttest  
-here under!!<br/>
-here under!!<br />
-and here^
-funker detta?&nbsp;
-ja eller nej?
-
-hejejejejehe
 
 ### Misc.
-- Master branch should be stable. Production code<br>
+- Master branch should be stable. Production code  
       - Use dev branches to develop and then `merge`/`rebase` to master
 
-- HEAD points to the tip (most recent Commit) of current branch\
+- HEAD points to the tip (most recent Commit) of current branch  
 			- Or to a specific older Commit (detached HEAD)
 
 - Remote Repo = Origin
 
 - Remote Tracking branch = Upstream branch
 
-- File life cycle:\
+- File life cycle:  
       - Untracked -> Unmodified -> Modified/Unstaged -> Staged -> Committed -> Pushed
 
 ### Standard Push procedure
