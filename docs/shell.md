@@ -7,7 +7,9 @@ _Author: Gustav Janér_
 ## GREP
 Combine grep with regex to make useful searches
 ```
-$ ls | grep ....
+ls | grep ....
+
+grep -ri "lolcodes" .    # recoursively, ignore captitalization, search for string " " in current directory .
 ```
 
 ## CHMOD

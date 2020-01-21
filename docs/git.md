@@ -1,13 +1,10 @@
 _Author: Gustav Janér_
 
-# Git commands
+# Git commands :)
 
 ### Misc.
 - Master branch should be stable. Production code\
       - Use dev branches to develop and then `merge`/`rebase` to master
-
-<!-- - Always: `pull` before `push`\
-      - Make sure that a local _public_ branch to be pushed has the newest upstream commits -->
 
 - HEAD points to the tip (most recent Commit) of current branch\
 			- Or to a specific older Commit (detached HEAD)
@@ -366,13 +363,13 @@ $ echo "fileToIgnore" >> .gitignore   # Append to .gitignore
 ```
 $ mkdir <folderName> && cd "$_"
 
-$ git init                              # Initialise a Local git repository in current directory
-$ echo "# Some git repo" >> README.md   # Create the README.md file
-$ echo "fileToIgnore" >> .gitignore     # Create the .gitignore file
-$ git add .                             # Stage all modified files
-$ git commit -m "Init commit"           # Commit the Staged files
-$ git remote add origin <repoUrl>       # Stage new Origin Repo
-$ git push -u origin master             # Push local Repo to the Remote origin
+$ git init                                  # Initialise a Local git repository in current directory
+$ echo "# Title of repo" >> README.md       # Create the README.md file
+$ echo "# Files to ignore:" >> .gitignore   # Create the .gitignore file
+$ git add .                                 # Stage all modified files
+$ git commit -m "Init commit"               # Commit the Staged files
+$ git remote add origin <repoUrl>           # Add the Remote Repo (use an empty repo)
+$ git push -u origin master                 # Push local Repo to the Remote origin
 ```
 
 ### Create a new repo from an existing repository
