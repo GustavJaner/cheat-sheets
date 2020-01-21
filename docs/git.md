@@ -1,6 +1,12 @@
 _Author: Gustav Janér_
 
 # Git commands
+test text
+test test test<br></br>
+asdkjalsdkhasdlkjh<br>
+ashdlashjd\
+
+hejejejejehe
 
 ### Misc.
 - Master branch should be stable. Production code<br>
