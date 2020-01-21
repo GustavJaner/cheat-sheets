@@ -1,6 +1,6 @@
 _Author: Gustav Janér_
 
-# Git commands :)
+# Git commands :P
 
 ### Misc.
 - Master branch should be stable. Production code\
