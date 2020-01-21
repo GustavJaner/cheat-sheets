@@ -1,9 +1,9 @@
 _Author: Gustav Janér_
 
-# Git commands OwO
+# Git commands
 
 ### Misc.
-- Master branch should be stable. Production code<br />
+- Master branch should be stable. Production code<br>
       - Use dev branches to develop and then `merge`/`rebase` to master
 
 - HEAD points to the tip (most recent Commit) of current branch\
