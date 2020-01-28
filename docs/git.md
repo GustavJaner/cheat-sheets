@@ -81,7 +81,7 @@ Update all local origin branches of the Local repo
 $ git fetch   # Update all the origin branches of the local repo
 ```
 
-**Note:**\
+**Note:**  
 `fetch` only updates the local copies of the Origin branches in the local repo. It does **not** `merge` the Origin updates with the actual local branches. Even if the local branches are tracking the Origin branches that are updated.
 
 
@@ -105,8 +105,8 @@ $ git pull origin master   # Update the current Local branch with the Remote mas
 ## MERGE
 
 ### Safe workflow
-Never let `merge` conflicts reach the origin master branch.\
-Always update a dev branch with origin master first, before merging the dev branch to origin master - to resolve any merge conflicts in the dev branch instead of origin master. Also to make sure that the dev feature still works with any new updates from origin master.\
+Never let `merge` conflicts reach the origin master branch.  
+Always update a dev branch with origin master first, before merging the dev branch to origin master - to resolve any merge conflicts in the dev branch instead of origin master. Also to make sure that the dev feature still works with any new updates from origin master.  
 **Keep master stable**
 
 ### Update dev branch with new commits to origin master
@@ -126,7 +126,7 @@ $ git push
 ```
 
 ### Merge dev branch to origin master
-Always create a **Pull Request(PR)** on the web interface of your Git provider to merge new commits to master. Request other collaborators to review the PR before merging.\
+Always create a **Pull Request(PR)** on the web interface of your Git provider to merge new commits to master. Request other collaborators to review the PR before merging.  
 _Otherwise, also possible to use the Git CLI:_
 ```
 # * currently on branch dev *
@@ -141,7 +141,7 @@ $ git push
 
 
 ## REBASE
-**Commit history can diverge from origin**\
+**Commit history can diverge from origin**  
 **Be careful. Especially when rebasing public branches**
 
 If you mess up, rewind history to just before the current `rebase` operation:
@@ -156,7 +156,7 @@ $ git rebase –-abort
 
 
 #### Rebase master to dev
-To be able to perform the next step of Rebasing dev to master:\
+To be able to perform the next step of Rebasing dev to master:  
 First, the dev branch has to be Directly ahead of the Remote HEAD of the master branch - so that Fast-Forwaring(Rebasing) is possible
 ```
 # * currently on branch dev *
@@ -184,8 +184,8 @@ $ git checkout master && git pull
 $ git rebase dev                    # Rebase to Fast-Forward master to the tip of dev
 $ git push
 ```
-**Note:**\
-In this case, since dev has been already been rebased on top of master:\
+**Note:**  
+In this case, since dev has been already been rebased on top of master:  
 --> a `merge` would also be performed by the **Fast-Forwarding** strategy automatically - thus same result as `rebase`.
 
 ### Rebasing commits on single branch
@@ -221,7 +221,7 @@ _To rebase multiple commits into one: use **squash** on all commits except the o
     - `reset --soft` is the default if not specified
 - hard reset will unstage/uncommit files/commits, **discarding** all changes
 
-**Careful:** `reset --hard`\
+**Careful:** `reset --hard`  
 All local changes currently made will be **lost**. To undo a `reset`:
 ```
 $ git reset HEAD@{1}   # CANNOT though recover changes that were never previously Staged
@@ -350,12 +350,12 @@ git remote set-url <remoteName> <remoteUrl>   # Let remoteName=origin
 ```
 
 ## MERGE vs. REBASE
-- If you prefer a clean, Linear history, free of any unnecessary merge-commits:\
-use `rebase` when integrating changes from other branches.\
+- If you prefer a clean, Linear history, free of any unnecessary merge-commits:  
+use `rebase` when integrating changes from other branches.  
 Merging creates an extra merge-commit - Rebasing does not.
 
-- If you prefer preserving the complete history of your project and avoiding the risk of rewriting Public commits:\
-use `merge` when integrating changes from other branches.\
+- If you prefer preserving the complete history of your project and avoiding the risk of rewriting Public commits:  
+use `merge` when integrating changes from other branches.  
 Merging do not risk rewriting commit history - Reabasing does.
 
 ### Fast-forward
@@ -368,11 +368,11 @@ Fast-forward                  # Fast-forward
  2 file changed, 5 insertions(+)
 ```
 
-When the commit pointed to by the dev branch is Directly ahead of the tip of master, Git simply moves the master HEAD pointer forward(Fast-Forwarding).\
+When the commit pointed to by the dev branch is Directly ahead of the tip of master, Git simply moves the master HEAD pointer forward(Fast-Forwarding).  
 When merging a branch with another branch that can be reached by following the first branch's commit history - Git performs a Fast-Forward of the commits.
 
-**--> This is the strategy of Rebasing**\
-Notice below the pointing of the local HEAD and and the origin of master:\
+**--> This is the strategy of Rebasing**  
+Notice below the pointing of the local HEAD and and the origin of master:  
 only when the HEAD pointer of dev is Directly ahead of **origin/master** - then Fast-Forward of dev to origin master is possible
 ```
 $ git log --oneline                            # Fast-Forward possible
@@ -392,12 +392,12 @@ Merge made by the 'recursive' strategy.
 index.html |    2 +
 2 file changed, 5 insertion(+)
 ```
-When the commit pointed to by the dev branch is **Not** directly ahead of the tip of master, Git has to make a three-way-merge (Recursive Strategy).\
-This is the case when the development history has diverged at some previous commit.\
+When the commit pointed to by the dev branch is **Not** directly ahead of the tip of master, Git has to make a three-way-merge (Recursive Strategy).  
+This is the case when the development history has diverged at some previous commit.  
 When the branch merged into master is not a direct ancestor of master, Git performs a three-way merge - using the two commits pointed to by the branch tips and the common ancestor commit.
 
 
 ## Checkout a branch
-Before checking out branches/redirecting the HEAD pointer to another branch/commit:\
+Before checking out branches/redirecting the HEAD pointer to another branch/commit:  
 If your working directory/staging area has uncommitted changes that conflict with the branch you’re checking out, then Git won’t let you switch branches.
 Either way, it’s always best practice to have a clean working state before you switch branches - always `commit` or `stash` before checking out
