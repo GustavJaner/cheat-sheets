@@ -1,6 +1,6 @@
 ## Repository Information
 ```
-git status   # General information about current branch
+git status   # Info about current branch
 git log      # List all commits of current branch
 git show     # List the changes of the last commit
 git diff     # List the changes of unstaged files

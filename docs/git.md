@@ -1,10 +1,9 @@
-# Git commands
+# Git Commands
 
 ## CLONE
 ```
 $ git clone <repoUrl>   # Download remote repository to local environment
 ```
-
 
 ## BRANCH
 ```
@@ -20,18 +19,17 @@ $ git branch -d <branch>        # Remove a Local  branch
 $ git push origin :<branch>     # Remove a Remote branch
 ```
 
-### Set a Remote Tracking/Upstream Branch of a local branch
-#### Use flag -u when Pushing
+### Set a Remote Tracking/Upstream Branch of a Local Branch
+#### Use Flag -u when Pushing
 ```
 $ git push -u origin <branch>   # If Remote branch does not already exist in repo: Remote branch is created and set as Upstream
 ```
 
-#### Set the Upstream branch to an Existing Remote branch
+#### Set the Upstream Branch to an Existing Remote Branch
 ```
 $ git branch --set-upstream-to=origin/dev   # Set the Upstream branch of current local branch
 $ git branch -u origin/dev                  # Short command
 ```
-
 
 ## CHECKOUT
 ```
@@ -43,7 +41,6 @@ $ git checkout <branch>         # Redirect HEAD to an existing branch
 $ git checkout <commitHash>     # Redirect HEAD to a specific commit - Detached HEAD state
 ```
 
-
 ## ADD
 Stage files for commit
 ```
@@ -54,7 +51,6 @@ $ git reset HEAD          # Unstage all files (--soft)
 $ git reset HEAD <file>   # Unstage a single file
 ```
 
-
 ## COMMIT
 Commit staged files to be pushed
 ```
@@ -62,18 +58,16 @@ $ git commit -m “commit message“   # Commit all Staged files with the given 
 $ git commit                       # Enter text editor to write commit message. Save to commit
 ```
 
-
 ## PUSH
 Push local commits to Origin
 ```
 $ git push   # Push all Commits of current Local branch to its Upstream branch
 ```
 
-### If current Local branch has no Upstream branch
+### If Current Local branch has no Upstream Branch
 ```
 $ git push -u origin <branch>   # If Remote branch does not already exist in repo: Remote branch is created and set as Upstream
 ```
-
 
 ## FETCH
 Update all local origin branches of the Local repo
@@ -83,7 +77,6 @@ $ git fetch   # Update all the origin branches of the local repo
 
 **Note:**  
 `fetch` only updates the local copies of the Origin branches in the local repo. It does **not** `merge` the Origin updates with the actual local branches. Even if the local branches are tracking the Origin branches that are updated.
-
 
 ## PULL
 `pull` is short command for: `fetch`+`merge`
@@ -95,21 +88,20 @@ $ git merge origin <branch>
 $ git pull origin <branch>
 ```
 
-### Update a Local branch with a Remote branch
+### Update a Local Branch with a Remote branch
 ```
 $ git pull                 # Update the current Local branch with its Upstream branch
 $ git pull origin master   # Update the current Local branch with the Remote master branch
 ```
 
-
 ## MERGE
 
-### Safe workflow
+### Safe Workflow
 Never let `merge` conflicts reach the origin master branch.  
 Always update a dev branch with origin master first, before merging the dev branch to origin master - to resolve any merge conflicts in the dev branch instead of origin master. Also to make sure that the dev feature still works with any new updates from origin master.  
 **Keep master stable**
 
-### Update dev branch with new commits to origin master
+### Update dev Branch With New Commits to origin master
 ```
 # * currently on branch dev *
 
@@ -125,7 +117,7 @@ $ git merge origin master    # Update local dev branch with origin master
 $ git push
 ```
 
-### Merge dev branch to origin master
+### Merge dev Branch to origin master
 Always create a **Pull Request(PR)** on the web interface of your Git provider to merge new commits to master. Request other collaborators to review the PR before merging.  
 _Otherwise, also possible to use the Git CLI:_
 ```
@@ -139,7 +131,6 @@ $ git push
 ### Merging vs. Rebasing
 `merge` is safer than `rebase`. Merging creates an extra merge-commit if needed and **cannot** rewrite the commit history
 
-
 ## REBASE
 **Commit history can diverge from origin**  
 **Be careful. Especially when rebasing public branches**
@@ -149,11 +140,10 @@ If you mess up, rewind history to just before the current `rebase` operation:
 $ git rebase –-abort
 ```
 
-### Rebasing instead of merging
+### Rebasing Instead of Merging
 - Rewinding HEAD to replay the commits of one branch on top of another branch
 - Apply commits from one branch onto another - without creating a merge-commit
 - Result: Linear commit history, free of merge-commits
-
 
 #### Rebase master to dev
 To be able to perform the next step of Rebasing dev to master:  
@@ -188,7 +178,7 @@ $ git push
 In this case, since dev has been already been rebased on top of master:  
 --> a `merge` would also be performed by the **Fast-Forwarding** strategy automatically - thus same result as `rebase`.
 
-### Rebasing commits on single branch
+### Rebasing Commits on Single Branch
 To clean up the commit history of a private branch before merging back to master
 
 ```
@@ -214,9 +204,8 @@ $ git push -f
 
 _To rebase multiple commits into one: use **squash** on all commits except the oldest commit_
 
-
 ## RESET
-### Soft vs. Hard reset
+### Soft vs. Hard Reset
 - soft reset will unstage/uncommit files/commits, but still keep the changes
     - `reset --soft` is the default if not specified
 - hard reset will unstage/uncommit files/commits, **discarding** all changes
@@ -227,7 +216,7 @@ All local changes currently made will be **lost**. To undo a `reset`:
 $ git reset HEAD@{1}   # CANNOT though recover changes that were never previously Staged
 ```
 
-### Unstage staged files
+### Unstage Staged Files
 ```
 $ git reset HEAD <file>     # Unstage single file
 $ git reset HEAD            # Unstage all files
@@ -235,7 +224,7 @@ $ git reset HEAD            # Unstage all files
 $ git reset --hard HEAD     # Discard all uncommitted changes on current branch
 ```
 
-### Uncommit unpushed commits
+### Uncommit Unpushed Commits
 ```
 $ git reset HEAD~1          # Reset the most recent commit    - Keeping the changes of the commit
 $ git reset HEAD~n          # Reset the n most recent commits - Keeping the changes of the commit
@@ -243,19 +232,17 @@ $ git reset HEAD~n          # Reset the n most recent commits - Keeping the chan
 $ git reset --hard HEAD~n   # Reset the n most recent commits - Discarding the changes of the commit
 ```
 
-### Uncommit pushed commits
+### Uncommit Pushed Commits
 Use any of the above `reset` commands and then force `push` to remove the commit from remote branch
 ```
 $ git push -f
 ```
-
 
 ## REVERT
 Reverts a commit that is already pushed to Remote repo
 ```
 $ git revert <commitHash>   # Create a new commit which reverts the changes of the commit you specified
 ```
-
 
 ## DIFF/SHOW
 ```
@@ -266,14 +253,13 @@ $ git show                 # List the changes of the last commit compared to the
 $ git show <commitHash>    # List the changes of a specific commit
 ```
 
-
 ## LOG
 ```
 $ git log             # List all commits to current branch and show HEAD pointers
 $ git log --oneline   # Cleaner log
 ```
 
-### HEAD pointers
+### HEAD Pointers
 The HEAD points by default to the tip (most recent Commit) of current branch, or to a specific older Commit (detached HEAD)
 ```
 $ git log --oneline
@@ -284,7 +270,6 @@ bf30977 (origin/master, origin/HEAD) [Git] Rearange sections
 - **HEAD -> master** - the Local HEAD is currently pointing to the tip of the Local master branch
 - **origin/master** - the Remote master branch is currently one commit behind the Local master branch
 - **origin/HEAD** - this branch/commit is the default initial checkout when the repo is cloned
-
 
 ## STASH
 Save the current state of your working directory on the Stash Stack, that can at a later point be reapplied
@@ -305,7 +290,6 @@ $ git stash show      # Summary of the top Stash
 $ git stash show i    # Summary of Stash at index i of the Stack
 ```
 
-
 ## CLEAN
 Remove untracked files from current git branch
 ```
@@ -314,41 +298,7 @@ $ git clean -f   # Delete the untracked files. Actually deletes the files so be 
 $ git clean -i   # Display the Clean interface
 ```
 
-
 # Misc.
-
-## Ignore
-Add files and folders to the .gitignore file to ignore them from being tracked by Git
-```
-$ vim .gitignore
-$ echo "fileToIgnore" >> .gitignore   # Append to .gitignore
-```
-
-
-## Setup a new repo from the CLI
-```
-$ mkdir <folderName> && cd "$_"
-
-$ git init                                  # Initialise a Local git repository in current directory
-$ echo "# Title of repo" >> README.md       # Create the README.md file
-$ echo "# Files to ignore:" >> .gitignore   # Create the .gitignore file
-$ git add .                                 # Stage all modified files
-$ git commit -m "Init commit"               # Commit the Staged files
-$ git remote add origin <repoUrl>           # Add the Remote Repo (use an empty repo)
-$ git push -u origin master                 # Push local Repo to the Remote origin
-```
-
-### Create a new repo from an existing repository
-```
-$ git pull origin master --allow-unrelated-histories
-```
-
-### Change the remote repository of a local repository
-```
-git remote -v                                 # List the current remote repository
-git remote set-url <remoteName> <remoteUrl>   # Let remoteName=origin
-```
-
 ## MERGE vs. REBASE
 - If you prefer a clean, Linear history, free of any unnecessary merge-commits:  
 use `rebase` when integrating changes from other branches.  
@@ -358,7 +308,7 @@ Merging creates an extra merge-commit - Rebasing does not.
 use `merge` when integrating changes from other branches.  
 Merging do not risk rewriting commit history - Reabasing does.
 
-### Fast-forward
+### Fast-Forward
 ```
 $ git checkout master && git pull
 $ git merge dev
@@ -382,7 +332,7 @@ c708f92 (HEAD -> dev)                          [Register] Update client for the 
 3edfd07 (origin/master, origin/HEAD, master)   [VideoPreview] Create the feed of video previews
 ```
 
-### Recursive three-way-merge
+### Recursive Three-Way-Merge
 ```
 $ git checkout master && git pull
 Switched to branch 'master'
@@ -397,7 +347,7 @@ This is the case when the development history has diverged at some previous comm
 When the branch merged into master is not a direct ancestor of master, Git performs a three-way merge - using the two commits pointed to by the branch tips and the common ancestor commit.
 
 
-## Checkout a branch
+## Checkout a Branch
 Before checking out branches/redirecting the HEAD pointer to another branch/commit:  
 If your working directory/staging area has uncommitted changes that conflict with the branch you’re checking out, then Git won’t let you switch branches.
 Either way, it’s always best practice to have a clean working state before you switch branches - always `commit` or `stash` before checking out

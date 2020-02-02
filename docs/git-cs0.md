@@ -1,10 +1,10 @@
 ## Push to a New Branch
 ```
 git checkout -b <newBranch>      # Create a new local branch
-# do changes to code..
+# do changes to your code..
 git status                       # List changed files
 git add .                        # Add all changed files
-git commit -m “commit msg“       # Create a commit
+git commit -m “commitMsg“        # Create a commit
 git push -u origin <newBranch>   # Push new branch with the commit
 ```
 
