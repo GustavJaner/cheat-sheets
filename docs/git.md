@@ -1,10 +1,74 @@
-# Git Commands<span id="Git Commands"></span>
-## Clone<span id="Clone"></span>
+# Git Commands
+https://git-guide.netlify.com/
+
+## Misc.
+- Master branch should be stable. Production code  
+      - Use dev branches to develop and then `merge`/`rebase` to master
+
+- HEAD points to the tip (most recent Commit) of current branch  
+			- Or to a specific older commit (detached HEAD)
+
+- Remote Repo = Origin
+
+- Remote Tracking branch = Upstream branch
+
+- File life cycle:  
+      - Untracked -> Unmodified -> Modified/Unstaged -> Staged -> Committed -> Pushed
+
+### Standard Push Procedure
+1. **Stage(add)** the local files that you have changed and that you want to commit
+2. **Commit** the staged  files
+3. **Push** the commit to the remote repository upstream branch
+
+### Push to a New Branch
+```
+git checkout -b <newBranch>      # Create a new local branch
+# do changes to your code..
+git status                       # List changed files
+git add .                        # Add all changed files
+git commit -m “commitMsg“        # Create a commit
+git push -u origin <newBranch>   # Push new branch with the commit
+```
+
+### Push to Current Existing Branch
+```
+git status                   # List changed files
+git add .                    # Add all changed files
+git commit -m “commit msg“   # Create a commit
+git push                     # Push the commit to upstream branch
+```
+
+### Setup a New Repo from the CLI
+```
+$ mkdir <folderName> && cd "$_"
+
+$ git init                                  # Initialise a Local git repository in current directory
+$ echo "# Title of repo" >> README.md       # Create the README.md file
+$ echo "# Files to ignore:" >> .gitignore   # Create the .gitignore file
+$ git add .                                 # Stage all modified files
+$ git commit -m "Init commit"               # Commit the Staged files
+$ git remote add origin <repoUrl>           # Add the Remote Repo (use an empty repo!)
+$ git push -u origin master                 # Push local Repo to the Remote origin
+```
+
+### Create a New Repo from an Existing Repository
+```
+$ git pull origin master --allow-unrelated-histories
+```
+
+### Change the Remote Repository of a Local Repository
+```
+git remote -v                                 # List the current remote repository
+git remote set-url <remoteName> <remoteUrl>   # Let remoteName=origin
+```
+
+
+## Clone
 ```
 $ git clone <repoUrl>   # Download remote repository to local environment
 ```
 
-## Branch<span id="Branch"></span>
+## Branch
 ```
 $ git branch                    # List all local branches
 $ git branch -v                 # List all local branches with the commit hash+message of the respective branch tip
@@ -30,7 +94,7 @@ $ git branch --set-upstream-to=origin/dev   # Set the Upstream branch of current
 $ git branch -u origin/dev                  # Short command
 ```
 
-## Checkout<span id="Checkout"></span>
+## Checkout
 ```
 $ git checkout                  # Less detailed than $ git status
 $ git checkout -- <file>        # Discard(--hard) changes of an Unstaged file in working directory
@@ -40,7 +104,7 @@ $ git checkout <branch>         # Redirect HEAD to an existing branch
 $ git checkout <commitHash>     # Redirect HEAD to a specific commit - Detached HEAD state
 ```
 
-## Add<span id="Add"></span>
+## Add
 Stage files for commit
 ```
 $ git add .               # Stage all modified files
@@ -50,14 +114,14 @@ $ git reset HEAD          # Unstage all files (--soft)
 $ git reset HEAD <file>   # Unstage a single file
 ```
 
-## Commit<span id="Commit"></span>
+## Commit
 Commit staged files to be pushed
 ```
 $ git commit -m “commit message“   # Commit all Staged files with the given message
 $ git commit                       # Enter text editor to write commit message. Save to commit
 ```
 
-## Push<span id="Push"></span>
+## Push
 Push local commits to Origin
 ```
 
@@ -69,7 +133,7 @@ $ git push   # Push all Commits of current Local branch to its Upstream branch
 $ git push -u origin <branch>   # If Remote branch does not already exist in repo: Remote branch is created and set as Upstream
 ```
 
-## Fetch<span id="Fetch"></span>
+## Fetch
 Update all local origin branches of the Local repo
 ```
 $ git fetch   # Update all the origin branches of the local repo
@@ -78,7 +142,7 @@ $ git fetch   # Update all the origin branches of the local repo
 **Note:**  
 `fetch` only updates the local copies of the Origin branches in the local repo. It does **not** `merge` the Origin updates with the actual local branches. Even if the local branches are tracking the Origin branches that are updated.
 
-## Pull<span id="Pull"></span>
+## Pull
 `pull` is short command for: `fetch`+`merge`
 ```
 $ git fetch
@@ -94,7 +158,7 @@ $ git pull                 # Update the current Local branch with its Upstream b
 $ git pull origin master   # Update the current Local branch with the Remote master branch
 ```
 
-## Merge<span id="Merge"></span>
+## Merge
 
 ### Safe Workflow
 Never let `merge` conflicts reach the origin master branch.  
@@ -131,7 +195,7 @@ $ git push
 ### Merging vs. Rebasing
 `merge` is safer than `rebase`. Merging creates an extra merge-commit if needed and **cannot** rewrite the commit history
 
-## Rebase<span id="Rebase"></span>
+## Rebase
 **Commit history can diverge from origin**  
 **Be careful. Especially when rebasing public branches**
 
@@ -204,7 +268,7 @@ $ git push -f
 
 _To rebase multiple commits into one: use **squash** on all commits except the oldest commit_
 
-## Reset<span id="Reset"></span>
+## Reset
 ### Soft vs. Hard Reset
 - soft reset will unstage/uncommit files/commits, but still keep the changes
     - `reset --soft` is the default if not specified
@@ -238,25 +302,25 @@ Use any of the above `reset` commands and then force `push` to remove the commit
 $ git push -f
 ```
 
-## Revert<span id="Revert"></span>
+## Revert
 Reverts a commit that is already pushed to Remote repo
 ```
 $ git revert <commitHash>   # Create a new commit which reverts the changes of the commit you specified
 ```
 
-## Diff<span id="Diff"></span>
+## Diff
 ```
 $ git diff                 # List the changes of Unstaged files compared to last commit
 $ git diff <commitHash>    # List the changes compared to a specific commit
 ```
 
-## Show<span id="Show"></span>
+## Show
 ```
 $ git show                 # List the changes of the last commit compared to the 2nd last commit
 $ git show <commitHash>    # List the changes of a specific commit
 ```
 
-## Log<span id="Log"></span>
+## Log
 ```
 $ git log             # List all commits to current branch and show HEAD pointers
 $ git log --oneline   # Cleaner log
@@ -274,7 +338,7 @@ bf30977 (origin/master, origin/HEAD) [Git] Rearange sections
 - **origin/master** - the Remote master branch is currently one commit behind the Local master branch
 - **origin/HEAD** - this branch/commit is the default initial checkout when the repo is cloned
 
-## Stash<span id="Stash"></span>
+## Stash
 Save the current state of your working directory on the Stash Stack, that can at a later point be reapplied
 ```
 $ git stash           # Save changes (both staged and unstaged) of current branch and Push to the Stash Stack
@@ -293,7 +357,7 @@ $ git stash show      # Summary of the top Stash
 $ git stash show i    # Summary of Stash at index i of the Stack
 ```
 
-## Clean<span id="Clean"></span>
+## Clean
 Remove untracked files from current git branch
 ```
 $ git clean -n   # Display which files will be deleted
@@ -301,8 +365,8 @@ $ git clean -f   # Delete the untracked files. Actually deletes the files so be 
 $ git clean -i   # Display the Clean interface
 ```
 
-# Misc.<span id="Misc."></span>
-## Merge vs. Rebase<span id="Merge vs. Rebase"></span>
+# Misc.
+## Merge vs. Rebase
 - If you prefer a clean, Linear history, free of any unnecessary merge-commits:  
 use `rebase` when integrating changes from other branches.  
 Merging creates an extra merge-commit - Rebasing does not.
@@ -349,6 +413,6 @@ When the commit pointed to by the dev branch is **Not** directly ahead of the ti
 This is the case when the development history has diverged at some previous commit.  
 When the branch merged into master is not a direct ancestor of master, Git performs a three-way merge - using the two commits pointed to by the branch tips and the common ancestor commit.
 
-## Checkout a Branch<span id="Checkout a Branch"></span>
+## Checkout a Branch
 Before checking out branches/redirecting the HEAD pointer to another branch/commit:  
 If your working directory/staging area has uncommitted changes that conflict with the branch you’re checking out, then Git won’t let you switch branches - `commit` or `stash` before checking out.
