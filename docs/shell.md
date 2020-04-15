@@ -58,7 +58,9 @@ Create the file README.md if it does not exist
 ## RM
 
 $ rm -rf <file> - Recusively force removes a folder and its contents
-
+	
+recursively remove all .DS_Store files from current directory
+$ find . -name '.DS_Store' -type f -delete
 
 ## KILL
 todo
